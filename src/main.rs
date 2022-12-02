@@ -34,8 +34,8 @@ fn advent_day_2() {
         .map(|line| line.split_once(' ').unwrap())
         .collect::<Vec<_>>();
 
-    let mut acc = 0;
-    for turn in guide {
+    let mut part_1_score = 0;
+    for turn in guide.clone() {
         let res = match turn {
             ("A", "X") => 4,
             ("A", "Y") => 8,
@@ -48,7 +48,25 @@ fn advent_day_2() {
             ("C", "Z") => 6,
             (_, _) => panic!("oops!"),
         };
-        acc = acc + res;
+        part_1_score = part_1_score + res;
     }
-    println!("Total score: {acc}");
+    println!("Total Part 1 score: {part_1_score}");
+
+    let mut part_2_score = 0;
+    for turn in guide {
+        let res = match turn {
+            ("A", "X") => 3,
+            ("A", "Y") => 4,
+            ("A", "Z") => 8,
+            ("B", "X") => 1,
+            ("B", "Y") => 5,
+            ("B", "Z") => 9,
+            ("C", "X") => 2,
+            ("C", "Y") => 6,
+            ("C", "Z") => 7,
+            (_, _) => panic!("oops!"),
+        };
+        part_2_score = part_2_score + res;
+    }
+    println!("Total Part 2 score: {part_2_score}");
 }
