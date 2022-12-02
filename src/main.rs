@@ -22,10 +22,9 @@ fn advent_day_1() {
     }
 
     elves_vec.sort();
-    elves_vec.reverse();
-    println!("Elf with more calories: {:?}", elves_vec.first());
+    println!("Elf with more calories: {:?}", elves_vec.last());
 
-    let sum_top_3 = elves_vec.iter().take(3).fold(0, |acc, i| acc + i);
+    let sum_top_3 = elves_vec.iter().rev().take(3).fold(0, |acc, i| acc + i);
     println!("Sum of top 3 elves: {sum_top_3}");
     println!("-------------");
 }
