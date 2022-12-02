@@ -2,6 +2,7 @@ use std::fs;
 
 fn main() {
     advent_day_1();
+    advent_day_2();
 }
 
 fn advent_day_1() {
@@ -21,5 +22,18 @@ fn advent_day_1() {
 
     let sum_top_3: u32 = elves_vec.iter().take(3).sum();
     println!("Sum of top 3 elves: {sum_top_3}");
+    println!("-------------");
+}
+
+fn advent_day_2() {
+    println!("Day 1 -------");
+    let contents = fs::read_to_string("src/rockpaperscissor.txt").expect("Cannot open file");
+    
+    let guide = contents.lines().map(|line| line.split_once( ' ').unwrap()).collect::<Vec<_>>();
+    
+    for game in guide {
+        println!("{:?}", game);
+    }
+    
     println!("-------------");
 }
