@@ -1,9 +1,11 @@
-use std::fs;
+use std::{fs, ops::Div};
 
 fn main() {
     advent_day_1();
     println!("-------------");
     advent_day_2();
+    println!("-------------");
+    advent_day_3_part_1();
 }
 
 fn advent_day_1() {
@@ -69,4 +71,26 @@ fn advent_day_2() {
         part_2_score = part_2_score + res;
     }
     println!("Total Part 2 score: {part_2_score}");
+}
+
+fn advent_day_3_part_1() {
+    println!("Day 3 -------");
+    let contents = fs::read_to_string("src/items.txt").expect("Cannot open file");
+    let rucksacks = contents
+        .lines()
+        .map(|line| line.split_at(line.len().div(2)))
+        .collect::<Vec<_>>();
+    let mut acc = 0;
+    let letters = ('a'..='z').chain('A'..='Z').collect::<String>();
+    for (sack_1, sack_2) in rucksacks {
+        let common_char_index = sack_1.chars().filter_map(|c| sack_2.find(c)).last();
+        let common_char = match common_char_index {
+            Some(index) => sack_2.chars().nth(index).unwrap(),
+            None => panic!("oops!"),
+        };
+        let item_priority = letters.chars().position(|c| c == common_char).unwrap() + 1;
+        println!("{common_char}: {:?}", item_priority);
+        acc = acc + item_priority;
+    }
+    println!("Total: {acc}");
 }
