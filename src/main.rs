@@ -1,5 +1,8 @@
 #![feature(iter_array_chunks)]
-use std::{fs, ops::Div};
+use std::{
+    fs,
+    ops::{Div, RangeBounds},
+};
 
 fn main() {
     advent_day_1();
@@ -10,6 +13,8 @@ fn main() {
     println!("-------------");
     advent_day_3_part_2();
     println!("-------------");
+    advent_day_4_part1();
+    advent_day_4_part2();
 }
 
 fn advent_day_1() {
@@ -108,10 +113,82 @@ fn advent_day_3_part_2() {
         .lines()
         .array_chunks::<3>()
         .map(|[a, b, c]| {
-            a.chars().find(|&a_char| b.contains(a_char) && c.contains(a_char)).unwrap()
+            a.chars()
+                .find(|&a_char| b.contains(a_char) && c.contains(a_char))
+                .unwrap()
         })
-        .map(|common_char |letters.chars().position(|c| c == common_char).unwrap() + 1)
+        .map(|common_char| letters.chars().position(|c| c == common_char).unwrap() + 1)
         .sum::<usize>();
 
     println!("Total part 2: {total}");
+}
+
+fn advent_day_4_part1() {
+    println!("Day 4 part 1-");
+    let contents = fs::read_to_string("src/sections.txt").expect("Cannot open file");
+
+    let included = contents
+        .lines()
+        .map(|line| {
+            line.split_once(",")
+                .map(|(a, b)| {
+                    let first_range = a
+                        .split_once("-")
+                        .map(|(num1, num2)| {
+                            num1.parse::<u32>().unwrap()..=num2.parse::<u32>().unwrap()
+                        })
+                        .unwrap()
+                        .collect::<Vec<_>>();
+                    let second_range = b
+                        .split_once("-")
+                        .map(|(num1, num2)| {
+                            num1.parse::<u32>().unwrap()..=num2.parse::<u32>().unwrap()
+                        })
+                        .unwrap()
+                        .collect::<Vec<_>>();
+
+                    first_range.iter().all(|z| second_range.contains(z))
+                        || second_range.iter().all(|z| first_range.contains(z))
+                })
+                .unwrap()
+        })
+        .filter(|&res| res == true)
+        .count();
+
+    println!("Total included ranges: {included}");
+}
+
+fn advent_day_4_part2() {
+    println!("Day 4 part 2-");
+    let contents = fs::read_to_string("src/sections.txt").expect("Cannot open file");
+
+    let included = contents
+        .lines()
+        .map(|line| {
+            line.split_once(",")
+                .map(|(a, b)| {
+                    let first_range = a
+                        .split_once("-")
+                        .map(|(num1, num2)| {
+                            num1.parse::<u32>().unwrap()..=num2.parse::<u32>().unwrap()
+                        })
+                        .unwrap()
+                        .collect::<Vec<_>>();
+                    let second_range = b
+                        .split_once("-")
+                        .map(|(num1, num2)| {
+                            num1.parse::<u32>().unwrap()..=num2.parse::<u32>().unwrap()
+                        })
+                        .unwrap()
+                        .collect::<Vec<_>>();
+
+                    first_range.iter().any(|z| second_range.contains(z))
+                        || second_range.iter().any(|z| first_range.contains(z))
+                })
+                .unwrap()
+        })
+        .filter(|&res| res == true)
+        .count();
+
+    println!("Total overlapping ranges: {included}");
 }
