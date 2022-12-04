@@ -1,3 +1,4 @@
+#![feature(iter_array_chunks)]
 use std::{fs, ops::Div};
 
 fn main() {
@@ -6,6 +7,9 @@ fn main() {
     advent_day_2();
     println!("-------------");
     advent_day_3_part_1();
+    println!("-------------");
+    advent_day_3_part_2();
+    println!("-------------");
 }
 
 fn advent_day_1() {
@@ -74,7 +78,7 @@ fn advent_day_2() {
 }
 
 fn advent_day_3_part_1() {
-    println!("Day 3 -------");
+    println!("Day 3 part 1-");
     let contents = fs::read_to_string("src/items.txt").expect("Cannot open file");
     let rucksacks = contents
         .lines()
@@ -89,8 +93,25 @@ fn advent_day_3_part_1() {
             None => panic!("oops!"),
         };
         let item_priority = letters.chars().position(|c| c == common_char).unwrap() + 1;
-        println!("{common_char}: {:?}", item_priority);
+        //println!("{common_char}: {:?}", item_priority);
         acc = acc + item_priority;
     }
-    println!("Total: {acc}");
+    println!("Total part 1: {acc}");
+}
+
+fn advent_day_3_part_2() {
+    println!("Day 3 part 2-");
+    let contents = fs::read_to_string("src/items.txt").expect("Cannot open file");
+    let letters = ('a'..='z').chain('A'..='Z').collect::<String>();
+
+    let total = contents
+        .lines()
+        .array_chunks::<3>()
+        .map(|[a, b, c]| {
+            a.chars().find(|&a_char| b.contains(a_char) && c.contains(a_char)).unwrap()
+        })
+        .map(|common_char |letters.chars().position(|c| c == common_char).unwrap() + 1)
+        .sum::<usize>();
+
+    println!("Total part 2: {total}");
 }
