@@ -1,8 +1,5 @@
 #![feature(iter_array_chunks)]
-use std::{
-    fs,
-    ops::{Div, RangeBounds},
-};
+use std::{collections::HashSet, fs, ops::Div};
 
 fn main() {
     advent_day_1();
@@ -15,6 +12,9 @@ fn main() {
     println!("-------------");
     advent_day_4_part1();
     advent_day_4_part2();
+    println!("-------------");
+    advent_day_6_part1();
+    advent_day_6_part2();
 }
 
 fn advent_day_1() {
@@ -191,4 +191,50 @@ fn advent_day_4_part2() {
         .count();
 
     println!("Total overlapping ranges: {included}");
+}
+
+struct CrateMoves {
+    number: u32,
+    from: u32,
+    to: u32,
+}
+
+fn advent_day_5_part1() {}
+
+fn advent_day_5_part2() {}
+
+fn advent_day_6_part1() {
+    println!("Day 6 part 1-");
+    let contents = fs::read_to_string("src/signal.txt")
+        .expect("Cannot open file")
+        .chars()
+        .collect::<Vec<_>>();
+    let res = contents
+        .windows(4)
+        .enumerate()
+        .find(|(_, slice)| {
+            let set = slice.iter().collect::<HashSet<_>>();
+            slice.len() == set.len()
+        })
+        .unwrap();
+
+    println!("{}", res.0 + 4);
+}
+
+fn advent_day_6_part2() {
+    println!("Day 6 part 2-");
+    let contents = fs::read_to_string("src/signal.txt")
+        .expect("Cannot open file")
+        .chars()
+        .collect::<Vec<_>>();
+    let res = contents
+        .windows(14)
+        .enumerate()
+        .find(|(_, slice)| {
+            let set = slice.iter().collect::<HashSet<_>>();
+            slice.len() == set.len()
+        })
+        .unwrap();
+
+    println!("{}", res.0 + 14);
 }
